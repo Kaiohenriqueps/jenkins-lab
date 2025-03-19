@@ -8,6 +8,15 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
     https://download.docker.com/linux/debian $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" \
     | tee /etc/apt/sources.list.d/docker.list > /dev/null && \
     apt-get update && apt-get install -y docker-ce-cli && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    apt-get update && apt-get install -y python3 python3-pip && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    # pip3 install --upgrade pip
+    python3 --version
+
+RUN mkdir /scripts
+COPY ./scripts /scripts
+
 USER jenkins
+
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
