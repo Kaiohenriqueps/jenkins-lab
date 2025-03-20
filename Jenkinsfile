@@ -4,11 +4,13 @@ pipeline {
         stage('Build') {
             steps {
                 sh "python3 --version"
+                sh 'python3 /scripts/hello.py'
             }
         }
         stage('Test') {
             steps {
-                sh 'python3 /scripts/hello.py'
+                git branch: 'dev', credentialsId: 'jenkins-git-token', url: 'https://github.com/Kaiohenriqueps/jenkins-lab.git'
+                sh "ls"
             }
         }
         stage('Deploy') {
